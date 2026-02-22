@@ -7,6 +7,7 @@ organization](https://github.com/upbound/) will list their repository maintainer
 
 ## Maintainers
 
+* Markus Schweig <markus.schweig@upbound.io> ([humoflife](https://github.com/humoflife))
 * Alper Ulucinar <alper@upbound.com> ([ulucinar](https://github.com/ulucinar))
 * Sergen Yalcin <sergen@upbound.com> ([sergenyalcin](https://github.com/sergenyalcin))
 

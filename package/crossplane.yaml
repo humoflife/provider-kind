@@ -1,3 +1,4 @@
+---
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
@@ -7,12 +8,24 @@ metadata:
     meta.crossplane.io/source: github.com/humoflife/provider-kind
     meta.crossplane.io/description: |
       A native Crossplane provider for KIND (Kubernetes IN Docker).
-      Manages KIND clusters without requiring Terraform.
+      Manages KIND clusters as managed resources without Terraform.
     meta.crossplane.io/readme: |
-      provider-kind enables Crossplane to manage KIND (Kubernetes IN Docker) clusters
-      as managed resources. It supports creating, observing, and deleting KIND clusters
-      using the local Docker daemon - no cloud credentials required.
+      provider-kind manages KIND (Kubernetes IN Docker) clusters as Crossplane
+      managed resources. It uses the KIND Go library to create and delete
+      clusters via the host Docker daemon — no cloud credentials required.
 
       Supported resources:
-        - kind.crossplane.io/v1alpha1/Cluster (cluster-scoped, LegacyManaged)
+        - kind.crossplane.io/v1alpha1/Cluster  (cluster-scoped, LegacyManaged)
         - kind.m.crossplane.io/v1alpha1/Cluster (namespaced, ModernManaged)
+
+      IMPORTANT: the provider pod must be able to reach the host Docker daemon.
+      Apply the DeploymentRuntimeConfig from examples/runtime-config.yaml before
+      installing the provider, and reference it in the Provider spec:
+
+        spec:
+          runtimeConfigRef:
+            apiVersion: pkg.crossplane.io/v1beta1
+            kind: DeploymentRuntimeConfig
+            name: provider-kind
+
+      See https://github.com/humoflife/provider-kind for full documentation.

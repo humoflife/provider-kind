@@ -1,0 +1,12 @@
+# KIND cluster configuration for local e2e testing of provider-kind.
+# extraMounts makes the host Docker socket available inside the KIND node so
+# that pods running in the cluster (specifically the provider-kind pod) can
+# mount it as a hostPath volume and reach the Docker daemon to create/delete
+# KIND clusters.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraMounts:
+  - hostPath: /var/run/docker.sock
+    containerPath: /var/run/docker.sock

@@ -1,0 +1,40 @@
+---
+# DeploymentRuntimeConfig grants provider-kind access to the host Docker daemon.
+#
+# provider-kind uses the KIND Go library which calls the `docker` CLI for all
+# cluster lifecycle operations. The provider pod therefore needs:
+#
+#
+#   1. The host Docker socket mounted at /var/run/docker.sock.
+#   2. Root privileges — the Docker socket is owned by root:root (mode 660)
+#      and no supplemental group grants access in a stock Crossplane deployment.
+#
+# Apply this resource BEFORE installing the provider:
+#
+#   kubectl apply -f examples/runtime-config.yaml
+#
+# If your Docker socket lives at a different path (e.g. on some Linux distros it
+# may be /run/docker.sock), update spec.deploymentTemplate.spec.template.spec
+# .volumes[0].hostPath.path accordingly.
+apiVersion: pkg.crossplane.io/v1beta1
+kind: DeploymentRuntimeConfig
+metadata:
+  name: provider-kind
+spec:
+  deploymentTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: docker-sock
+              hostPath:
+                path: /var/run/docker.sock
+                type: Socket
+          containers:
+            - name: package-runtime
+              volumeMounts:
+                - name: docker-sock
+                  mountPath: /var/run/docker.sock
+              securityContext:
+                runAsUser: 0
+                runAsNonRoot: false

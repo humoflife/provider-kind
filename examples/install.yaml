@@ -1,6 +1,18 @@
+---
+# Install provider-kind.
+#
+# Apply the DeploymentRuntimeConfig first so Crossplane can configure the
+# provider pod before it starts:
+#
+#   kubectl apply -f examples/runtime-config.yaml
+#   kubectl apply -f examples/install.yaml
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-kind
 spec:
   package: xpkg.upbound.io/humoflife/provider-kind:v0.1.0
+  runtimeConfigRef:
+    apiVersion: pkg.crossplane.io/v1beta1
+    kind: DeploymentRuntimeConfig
+    name: provider-kind

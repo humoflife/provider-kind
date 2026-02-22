@@ -22,11 +22,12 @@ import (
 	"github.com/humoflife/provider-kind/apis"
 	"github.com/humoflife/provider-kind/internal/controller"
 	"github.com/humoflife/provider-kind/internal/features"
+	"github.com/humoflife/provider-kind/internal/version"
 )
 
 func main() {
 	var (
-		app          = kingpin.New(filepath.Base(os.Args[0]), "Native Crossplane provider for KIND (Kubernetes IN Docker)").DefaultEnvars()
+		app          = kingpin.New(filepath.Base(os.Args[0]), "Native Crossplane provider for KIND (Kubernetes IN Docker)").DefaultEnvars().Version(version.Version)
 		debug        = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
 		syncPeriod   = app.Flag("sync", "Controller manager sync period such as 300ms, 1.5h, or 2h45m").Short('s').Default("1h").Duration()
 		pollInterval = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()

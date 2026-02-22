@@ -7,6 +7,7 @@ package cluster
 
 import (
 	"context"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -205,6 +206,10 @@ func (e *external) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 
 	opts := []kindcluster.CreateOption{
 		kindcluster.CreateWithV1Alpha4Config(kindConfig),
+		// Write the kubeconfig to /dev/null to prevent KIND from modifying the
+		// default ~/.kube/config and changing the kubectl current-context on the
+		// host. The kubeconfig is retrieved separately via provider.KubeConfig().
+		kindcluster.CreateWithKubeconfigPath(os.DevNull),
 	}
 
 	// If waitForReady is specified, wait for nodes to become ready.
@@ -256,8 +261,10 @@ func (e *external) Delete(ctx context.Context, mg resource.Managed) (managed.Ext
 
 	clusterName := getClusterName(cr)
 
-	// Passing an empty kubeconfig path causes KIND to use the default kubeconfig.
-	if err := e.provider.Delete(clusterName, ""); err != nil {
+	// Pass os.DevNull so KIND does not attempt to remove the cluster entry from
+	// the default ~/.kube/config (which would also not exist there anyway since
+	// Create wrote to /dev/null).
+	if err := e.provider.Delete(clusterName, os.DevNull); err != nil {
 		return managed.ExternalDelete{}, errors.Wrap(err, errDeleteCluster)
 	}
 
