@@ -1,0 +1,27 @@
+apiVersion: kind.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  name: ingress-cluster
+  annotations:
+    crossplane.io/external-name: ingress-cluster
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    waitForReady: "5m"
+    nodes:
+      - role: control-plane
+        # Expose ports 80 and 443 on the host for ingress controllers.
+        extraPortMappings:
+          - containerPort: 80
+            hostPort: 80
+            protocol: TCP
+          - containerPort: 443
+            hostPort: 443
+            protocol: TCP
+    networking:
+      # Disable default CNI to install a custom one (e.g. Calico, Cilium).
+      disableDefaultCNI: false
+  writeConnectionSecretToRef:
+    name: ingress-cluster-kubeconfig
+    namespace: crossplane-system

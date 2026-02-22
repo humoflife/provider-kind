@@ -13,7 +13,7 @@ import (
 
 // Package type metadata.
 const (
-	Group   = "template.upbound.io"
+	Group   = "kind.crossplane.io"
 	Version = "v1beta1"
 )
 
@@ -49,4 +49,5 @@ var (
 func init() {
 	SchemeBuilder.Register(&ProviderConfig{}, &ProviderConfigList{})
 	SchemeBuilder.Register(&ProviderConfigUsage{}, &ProviderConfigUsageList{})
+	SchemeBuilder.Register(&NamespacedProviderConfigUsage{}, &NamespacedProviderConfigUsageList{})
 }

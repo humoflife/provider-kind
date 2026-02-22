@@ -1,0 +1,20 @@
+apiVersion: kind.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  name: my-cluster
+  annotations:
+    # The external-name annotation sets the name of the KIND cluster.
+    # If omitted, the managed resource name is used.
+    crossplane.io/external-name: my-cluster
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    # Wait up to 5 minutes for the cluster to become ready.
+    waitForReady: "5m"
+    # Single control-plane node (default if nodes is omitted).
+    nodes:
+      - role: control-plane
+  writeConnectionSecretToRef:
+    name: my-cluster-kubeconfig
+    namespace: crossplane-system

@@ -1,11 +1,7 @@
-apiVersion: template.upbound.io/v1beta1
+apiVersion: kind.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default
-spec:
-  credentials:
-    source: Secret
-    secretRef:
-      name: example-creds
-      namespace: crossplane-system
-      key: credentials
+# The KIND provider does not require credentials.
+# It uses the local Docker daemon which is accessible without authentication.
+spec: {}

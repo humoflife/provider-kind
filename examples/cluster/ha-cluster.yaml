@@ -1,0 +1,24 @@
+apiVersion: kind.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  name: ha-cluster
+  annotations:
+    crossplane.io/external-name: ha-cluster
+spec:
+  providerConfigRef:
+    name: default
+  forProvider:
+    waitForReady: "10m"
+    nodes:
+      - role: control-plane
+      - role: control-plane
+      - role: control-plane
+      - role: worker
+      - role: worker
+    networking:
+      apiServerAddress: "127.0.0.1"
+      podSubnet: "10.244.0.0/16"
+      serviceSubnet: "10.96.0.0/16"
+  writeConnectionSecretToRef:
+    name: ha-cluster-kubeconfig
+    namespace: crossplane-system
