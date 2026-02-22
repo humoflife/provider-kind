@@ -1,4 +1,18 @@
 apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: upjet-provider-template
+  name: provider-kind
+  annotations:
+    meta.crossplane.io/maintainer: The provider-kind authors
+    meta.crossplane.io/source: github.com/humoflife/provider-kind
+    meta.crossplane.io/description: |
+      A native Crossplane provider for KIND (Kubernetes IN Docker).
+      Manages KIND clusters without requiring Terraform.
+    meta.crossplane.io/readme: |
+      provider-kind enables Crossplane to manage KIND (Kubernetes IN Docker) clusters
+      as managed resources. It supports creating, observing, and deleting KIND clusters
+      using the local Docker daemon - no cloud credentials required.
+
+      Supported resources:
+        - kind.crossplane.io/v1alpha1/Cluster (cluster-scoped, LegacyManaged)
+        - kind.m.crossplane.io/v1alpha1/Cluster (namespaced, ModernManaged)
