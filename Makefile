@@ -133,7 +133,7 @@ run: go.build
 
 # ====================================================================================
 # End to End Testing
-CROSSPLANE_VERSION = 1.16.0
+CROSSPLANE_VERSION = 2.2.0
 # Use the default Crossplane namespace (crossplane-system) so that connection
 # secrets and other core resources land in the standard location.
 CROSSPLANE_NAMESPACE = crossplane-system
